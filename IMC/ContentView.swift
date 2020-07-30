@@ -8,9 +8,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    @Environment(\.colorScheme) var colorScheme
-    
+struct ContentView: View { 
     @State private var peso = ""
     @State private var altura = ""
     @State private var image = 0
@@ -21,96 +19,99 @@ struct ContentView: View {
     let resultTipo = ["Magreza", "Normal", "Sobrepeso", "Obesidade", "Obesidade Grave"]
     
     var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                LinearGradient(gradient: Gradient(colors: self.colorScheme == .light ? [Color(#colorLiteral(red: 0, green: 0.6715669487, blue: 0.8866384846, alpha: 1)), Color(#colorLiteral(red: 0, green: 0.7019607843, blue: 0.7647058824, alpha: 1))] : [Color(#colorLiteral(red: 0.03921568627, green: 0.5176470588, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.004370007664, green: 0.4360928837, blue: 0.7523878691, alpha: 1))]), startPoint: .topLeading, endPoint: .bottomTrailing)
-                    .edgesIgnoringSafeArea(.all)
-                    .onTapGesture {
-                        self.hiddenKeyboard()
-                    }
+        ZStack {
+            LinearGradient(gradient: Gradient(colors: [Color("Color1"), Color("Color2"), Color("Color1")]), startPoint: .topLeading, endPoint: .bottomTrailing)
+                .edgesIgnoringSafeArea(.all)
+                .onTapGesture {
+                    self.hiddenKeyboard()
+                }
+            
+            VStack {
                 
-                VStack {
-                    Spacer(minLength: geo.size.height / 3.5)
-                    Text("Cálculo do IMC")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                    Text("Descubra o seu índice de massa corporal")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding(.top, geo.size.height / 40)
-                        .padding(.horizontal, geo.size.width / 20)
-                    
-                    HStack(spacing: 50) {
-                        VStack {
-                            Text("Peso (kg)")
-                                .foregroundColor(.white)
-                            TextField("Ex: 75", text: self.$peso)
-                                .foregroundColor(.primary).colorInvert()
-                                .padding(.leading, 10)
-                                .keyboardType(.decimalPad)
-                                .frame(width: geo.size.width / 3, height: geo.size.height / 15)
-                                .background(Color.primary).colorInvert()
-                                .cornerRadius(10)
-                                .shadow(color: Color.primary.opacity(0.4), radius: 4, x: 2, y: 2)
-                        }
-                        VStack {
-                            Text("Altura (m)")
-                                .foregroundColor(.white)
-                            TextField("Ex: 1.75", text: self.$altura)
-                                .foregroundColor(.primary).colorInvert()
-                                .padding(.leading, 10)
-                                .keyboardType(.decimalPad)
-                                .frame(width: geo.size.width / 3, height: geo.size.height / 15)
-                                .background(Color.primary).colorInvert()
-                                .cornerRadius(10)
-                                .shadow(color: Color.primary.opacity(0.4), radius: 4, x: 2, y: 2)
-                        }
+                Spacer()
+                
+                Text("Cálculo do IMC")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .padding(.bottom)
+                Text("Descubra o seu índice de massa corporal")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                
+                HStack(spacing: 50) {
+                    VStack {
+                        Text("Peso (kg)")
+                            .foregroundColor(.white)
+                            .padding([.top, .horizontal], 10)
+                            .frame(maxWidth: 100)
+                        TextField("Ex: 75", text: self.$peso)
+                            .padding(.leading, 10)
+                            .keyboardType(.decimalPad)
+                            .frame(width: UIScreen.main.bounds.width / 3, height: UIScreen.main.bounds.height / 20)
+                            .background(Color(.secondarySystemBackground))
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray, lineWidth: 1))
+                            .shadow(radius: 8)
                     }
-                    .padding(.vertical, geo.size.height / 30)
                     
-                    Button(action: {
-                        self.calculoImc()
-                        self.hiddenKeyboard()
-                    }) {
-                        Text("Calcular")
-                            .font(.headline)
-                            .foregroundColor(self.colorScheme == .light ? Color(#colorLiteral(red: 0, green: 0.7019607843, blue: 0.7647058824, alpha: 1)) : Color(#colorLiteral(red: 0.004370007664, green: 0.4360928837, blue: 0.7523878691, alpha: 1)))
-                            .padding(.horizontal, geo.size.width / 3.5)
-                            .padding(.vertical, geo.size.height / 50)
-                            .background(self.colorScheme == .light ? Color(#colorLiteral(red: 1, green: 0.9275085745, blue: 0.5360817619, alpha: 1)) : Color(#colorLiteral(red: 1, green: 0.802802881, blue: 0.5836523955, alpha: 1)))
-                            .cornerRadius(10)
-                            .shadow(color: Color.primary.opacity(0.5), radius: 4, x: 2, y: 2)
-                        
+                    VStack {
+                        Text("Altura (m)")
+                            .foregroundColor(.white)
+                            .padding([.top, .horizontal], 10)
+                            .frame(maxWidth: 100)
+                        TextField("Ex: 1.75", text: self.$altura)
+                            .padding(.leading, 10)
+                            .keyboardType(.decimalPad)
+                            .frame(width: UIScreen.main.bounds.width / 3, height: UIScreen.main.bounds.height / 20)
+                            .background(Color(.secondarySystemBackground))
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray, lineWidth: 1))
+                            .shadow(radius: 8)
                     }
-                    Text("Seu índice de massa corporal é:")
+                }
+                .padding(.vertical)
+                
+                Button(action: {
+                    self.calculoImc()
+                    self.hiddenKeyboard()
+                }) {
+                    Text("Calcular")
                         .font(.headline)
-                        .foregroundColor(.white)
-                        .padding(.top, geo.size.height / 30)
-                        .opacity(self.button ? 1 : 0)
-                    
-                    Text("\(self.result, specifier: "%.1f"):  \(self.resultTipo[self.image])")
-                        .font(.title)
-                        .foregroundColor(.white)
-                        .padding(.top, geo.size.height / 50)
-                        .opacity(self.button ? 1 : 0)
-                    
-                    Image(self.images[self.image])
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: geo.size.width / 5, height: geo.size.height / 3)
-                        .padding(.horizontal, 120)
-                        .background((Color.primary).colorInvert())
-                        .clipShape(Circle())
-                        .overlay(Circle().stroke(self.colorScheme == .light ? Color(#colorLiteral(red: 0, green: 0.7019607843, blue: 0.7647058824, alpha: 1)) : Color(#colorLiteral(red: 0.004370007664, green: 0.4360928837, blue: 0.7523878691, alpha: 1)), lineWidth: 4))
-                        .shadow(color: Color.primary.opacity(0.4), radius: 10, x: 0, y: 0)
-                        .opacity(self.button ? 1 : 0)
-                    
-                    
-                    Spacer(minLength: geo.size.height / 4)
+                        .foregroundColor(Color("ColorName"))
+                        .padding(.vertical)
+                        .frame(width: UIScreen.main.bounds.width / 2)
+                        .background(Color("ColorCalculate"))
+                        .cornerRadius(10)
+                        .shadow(radius: 8)
                     
                 }
-                .frame(width: geo.size.width * 1.3, height: geo.size.height * 1.3)
+                Text("Seu índice de massa corporal é:")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding(.top, 30)
+                    .opacity(self.button ? 1 : 0)
+                
+                Text("\(self.result, specifier: "%.1f"):  \(self.resultTipo[self.image])")
+                    .font(.title)
+                    .foregroundColor(.white)
+                    .padding(.top)
+                    .opacity(self.button ? 1 : 0)
+                
+                Image(self.images[self.image])
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: UIScreen.main.bounds.width - 100, height: UIScreen.main.bounds.height / 3)
+                    .padding(.all)
+                    .background(Color(.secondarySystemBackground))
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(Color("Color2"), lineWidth: 4))
+                    .shadow(radius: 10)
+                    .opacity(self.button ? 1 : 0)
+                
+                
+                Spacer()
+                
             }
         }
     }
@@ -140,7 +141,7 @@ struct ContentView: View {
         } else {
             self.button = false
         }
-
+        
     }
     
     func hiddenKeyboard() {
